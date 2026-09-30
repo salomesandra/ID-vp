@@ -1,0 +1,29 @@
+{
+  "name": "id-vp",
+  "version": "1.0.0",
+  "description": "õppetöö raames tehtud veeb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://salomesandra@github.com/salomesandra/ID-vp.git"
+  },
+  "keywords": [
+    "TLÜ",
+    "DTI",
+    "veeb",
+    "õppetöö"
+  ],
+  "author": "Sandra Salome Ust",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://salomesandra@github.com/salomesandra/ID-vp/issues"
+  },
+  "homepage": "https://salomesandra@github.com/salomesandra/ID-vp#readme",
+  "dependencies": {
+    "ejs": "^6.0.1",
+    "express": "^5.2.1"
+  }
+}
