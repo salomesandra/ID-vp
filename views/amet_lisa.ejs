@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<title>Sandra, veebiprogrammeerimine</title>
+</head>
+<body>
+	<img src="../Pic/veebiprogrammeerimine_2026_ID.png" alt="">
+	<h1>Lisa Eesti filmiga seotud inimesi</h1>
+	<a href="/"><button>Esileht</button></a>
+	<a href="/eestifilm"><button>Tagasi Eesti filmi avalehele</button></a>
+	<hr>
+	<form method="POST">
+		<label for="professionInput">Ameti nimetus</label>
+		<input id="professionInput" name="professionInput" type="text" placeholder="Amet" required>
+		<br><br>
+		<label for="descriptionInput">Ameti kirjeldus</label>
+		<input id="descriptionInput" name="descriptionInput" type="text" placeholder="Ameti kirjeldus" required>
+		<br><br>
+		<input id="professionSubmit" name="professionSubmit" type="submit" value="Salvesta">
+	</form>
+	<p><%= notice %></p>
+</body>
+</html>

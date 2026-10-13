@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<title>Sandra, veebiprogrammeerimine</title>
+</head>
+<body>
+	<img src="../Pic/veebiprogrammeerimine_2026_ID.png" alt="">
+	<h1>Lisa Eesti filme</h1>
+	<a href="/"><button>Esileht</button></a>
+	<a href="/eestifilm"><button>Tagasi Eesti filmi avalehele</button></a>
+	<hr>
+	<form method="POST">
+		<label for="titleInput">Filmi pealkiri</label>
+		<input id="titleInput" name="titleInput" type="text" placeholder="Filmi pealkiri" required>
+		<br><br>
+		<label for="releaseYearInput">Filmi väljalase</label>
+		<input id="releaseYearInput" name="releaseYearInput" type="number" min="1900" max="2099" step="1" value="2026" required>
+		<br><br>
+		<label for="durationHourInput">Filmi kestvus</label>
+		<input id="durationHourInput" name="durationHourInput" type="number" min="0" max="23" step="1" value="0" required> tundi
+		<input id="durationMinutesInput" name="durationMinutesInput" type="number" min="0" max="60" step="1" value="0" required> minutit.
+		<br><br>
+		<label for="descriptionInput">Filmi kirjeldus</label>
+		<input id="descriptionInput" name="descriptionInput" type="text" placeholder="Filmi kirjeldus" required>
+		<br><br>
+		<input id="movieSubmit" name="movieSubmit" type="submit" value="Salvesta">
+	</form>
+	<p><%= notice %></p>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<title>Sandra, veebiprogrammeerimine</title>
+</head>
+<body>
+	<img src="../Pic/veebiprogrammeerimine_2026_ID.png" alt="">
+	<h1>Lisa Eesti filmiga seotud inimesi</h1>
+	<a href="/"><button>Esileht</button></a>
+	<a href="/eestifilm"><button>Tagasi Eesti filmi avalehele</button></a>
+	<hr>
+	<form method="POST">
+		<label for="firstNameInput">Filmiinimese eesnimi</label>
+		<input id="firstNameInput" name="firstNameInput" type="text" placeholder="Eesnimi" value="<%= firstName %>">
+		<br><br>
+		<label for="lastNameInput">Filmiinimese perekonnanimi</label>
+		<input id="lastNameInput" name="lastNameInput" type="text" placeholder="Perekonnanimi" value="<%= lastName %>">
+		<br><br>
+		<label for="bornInput">Filmiinimese sünnikuupäev</label>
+		<input id="bornInput" name="bornInput" type="date" value="<%= born %>" required>
+		<br><br>
+		<label for="deceasedInput">Filmiinimese surmakuupäev</label>
+		<input id="deceasedInput" name="deceasedInput" type="date" value="<%= deceased %>">
+		<br><br>
+		<input id="personSubmit" name="personSubmit" type="submit" value="Salvesta">
+	</form>
+	<p><%= notice %></p>
+</body>
+</html>
