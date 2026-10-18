@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<title>Sandra, veebiprogrammeerimine</title>
+	<script>
+		function character(data) {
+			const profession = document.getElementById("profession").value;
+			if (profession == 1) {
+				document.getElementById("characterName").style.display = '';
+
+			} else {
+				document.getElementById("characterName").style.display = 'none';
+
+			}
+		}
+	</script>
+</head>
+<body>
+	<img src="../Pic/veebiprogrammeerimine_2026_ID.png" alt="">
+	<h1>Seosed erinevate kategooriate vahel</h1>
+
+<form method="POST">
+<select id="inimesed" name="inimesed">
+	<option selected disabled>Vali filmimaailma inimene</option>
+	<% personList.forEach(function(person){ %>
+		<option value="<%= person.id %>"><%= person.first_name %> <%= person.last_name %></option>
+		<% }); %>
+</select>
+<select id="movie" name="movie">
+	<option selected disabled>Vali film</option>
+	<% movieList.forEach(function(movie){ %>
+		<option value="<%= movie.id %>"><%= movie.title %></option>
+		<% }); %>
+</select>
+<select id="profession" name="profession" onchange="character()">
+	<option selected disabled>Vali amet</option>
+	<% professionList.forEach(function(profession){ %>
+		<option value="<%= profession.id %>"><%= profession.title %></option>
+		<% }); %>
+</select>
+	<label for="characterName"></label>
+	<input id="characterName" name="characterName" type="text" placeholder="Tegelaskuju nimi ..."> 
+	
+
+<input id="seosedSubmit" name="seosedSubmit" type="submit" value="Salvesta seos">
+</form>
+
+<p><%= notice %></p>
+
+
+</select>
+	<a href="/"><button>Esileht</button></a>
+	<a href="/eestifilm"><button>Tagasi Eesti filmi avalehele</button></a>
+	<hr>
+	
+</body>
+</html>
+

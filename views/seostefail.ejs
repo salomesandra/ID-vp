@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<title>Sandra, veebiprogrammeerimine</title>
+</head>
+<body>
+	<img src="../Pic/veebiprogrammeerimine_2026_ID.png" alt="">
+	<h1>Loodud seosed</h1>
+	<a href="/"><button>Esileht</button></a>
+	<a href="/eestifilm"><button>Tagasi Eesti filmi avalehele</button></a>
+	<hr>
+	<ol>
+		<% personInMovieList.forEach(function(personInMovie){ %>
+			<%
+				const foundPerson = person.find((pe) => pe.id == personInMovie.person_id);
+				let name = "";
+				if (foundPerson) {
+					name = foundPerson.first_name + " " + foundPerson.last_name;
+				}
+
+				const foundMovie = movie.find((m) => m.id == personInMovie.movie_id);
+				let title = "";
+				if (foundMovie) {
+					title = foundMovie.title;
+				}
+
+				const foundProfession = profession.find((pr) => pr.id == personInMovie.profession_id);
+				let prtitle = "";
+				if (foundProfession) {
+					prtitle = foundProfession.title;
+				}
+
+				const isNamedCharacter = personInMovie.character_name != "" && personInMovie.character_name != null;
+				let hasname = "";
+				if (isNamedCharacter) {
+					hasname = "Tegelaskuju nimi on " + personInMovie.character_name + ". ";
+				}
+
+			%>
+			<li><%= hasname %>Inimese nimi <%= name %>, filmi pealkiri <%= title %>, amet <%= prtitle %>.</li>
+		<% }); %>
+	</ol>
+</body>
+</html>
