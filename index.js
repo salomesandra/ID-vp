@@ -18,8 +18,8 @@ app.set('view engine', 'ejs');
 //määrame avalikuna kasutatava kataloogi
 app.use(express.static('Public'));
 
-//määrame vormide sisu parsimise
-app.use(bodyparser.urlencoded({extended: false}));
+//määrame vormide sisu parsimise, kui false, siis ainult tekst
+app.use(bodyparser.urlencoded({extended: true}));
 
 //marsruudid
 app.get('/', (req, res)=>{
@@ -39,11 +39,16 @@ app.get('/vanasona', async (req, res)=>{
 app.get('/koolitee', async (req, res)=>{
 	res.render('koolitee');
 });
+
 //Eesti filmi marsruudid 
 const eestiFilmRouter = require('./routes/eestifilmRoutes');
 app.use('/eestifilm', eestiFilmRouter);
 
 const visiitRouter = require('./routes/visiitRoutes');
 app.use('/visiit', visiitRouter);
+
+//galeriipiltide üleslaadimine
+const galleryPhotoUploadRouter = require('./routes/galleryPhotoUploadRoutes');
+app.use('/galleryPhotoUpload', galleryPhotoUploadRouter);
 
 app.listen(5214);
