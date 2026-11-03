@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css" />
+	<title>Sandra, veebiprogrammeerimine</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <img src="Pic/veebiprogrammeerimine_2026_ID.png" alt="">
+    <h1>Fotogalerii</h1>
+    <hr>
+    <p><a href="/"><button>Esileht</button></a>
+    <div class="gallery">
+        <% photoData.forEach(function(image) { %>
+            <a href="/gallery/normal/<%=image.filename%>" data-fancybox="galerii" data-caption="<%= image.alttext %>">
+            <img src="/gallery/thumbs/<%=image.filename%>" alt="<%=image.alttext%>" loading="lazy"></a>
+            </a>
+            <% }); %>
+    </div>
+
+    <br><br>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+</body>
+</html>

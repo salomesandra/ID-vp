@@ -3,9 +3,10 @@ const dateTimeET = require('./src/dateTimeET');
 const vanasonad = require('./src/vanasonad');
 const bodyparser = require('body-parser');
 
+
 //moodul andmebaasiga suhtlemiseks (koos async ehk ootamise osaga)
 const mysql = require('mysql2/promise');
-const { read } = require('fs');
+const {read} = require('fs');
 //moodul .env keskkonnamuutujate lugemiseks
 require('dotenv').config();
 
@@ -22,13 +23,44 @@ app.use(express.static('Public'));
 app.use(bodyparser.urlencoded({extended: true}));
 
 //marsruudid
-app.get('/', (req, res)=>{
+app.get('/', async(req, res)=>{
 	const dayNow = dateTimeET.day();
 	const dateNow = dateTimeET.date(1);
 	const timeNow = dateTimeET.time();
 	const dayPart = dateTimeET.daypart();
-	//res.send('Express.js veeb läkski käima!');
-	res.render('index', {dayNow: dayNow, dateNow: dateNow, timeNow: timeNow, dayPart: dayPart});
+	let conn;
+	try {
+		let sqlReq = 'SELECT filename, alttext FROM galleryphotos WHERE id=(SELECT MAX(id) FROM galleryphotos WHERE privacy=3 AND deleted IS NULL)';
+
+		conn = await mysql.createConnection({
+			host: process.env.DB_HOST, 
+			user: process.env.DB_USER,
+			password: process.env.DB_PASS,
+			database: process.env.DB_NAME
+		});
+		const [result] = await conn.execute(sqlReq);
+		let img = result[0];
+		if (img.alttext == '') {
+			img.alttext = 'Uusim avalik foto, lisatud kell ' + timeNow
+		}
+		//console.log(result);
+		res.render('index', {
+			dayNow: dayNow,
+			dateNow: dateNow,
+			timeNow: timeNow,
+			dayPart: dayPart,
+			image: img
+		});
+	}
+	catch (err) {
+		console.log('Viga: ' + err);
+		res.render('index', {dayNow: dayNow, dateNow: dateNow, timeNow: timeNow, dayPart: dayPart, img: {} });
+	}
+	finally {
+		if(conn){}
+		await conn.end();
+	}
+	
 });
 
 app.get('/vanasona', async (req, res)=>{
@@ -50,5 +82,9 @@ app.use('/visiit', visiitRouter);
 //galeriipiltide üleslaadimine
 const galleryPhotoUploadRouter = require('./routes/galleryPhotoUploadRoutes');
 app.use('/galleryPhotoUpload', galleryPhotoUploadRouter);
+
+const fotoGaleriiRouter = require('./routes/fotoGaleriiRoutes');
+app.use('/fotogalerii', fotoGaleriiRouter);
+
 
 app.listen(5214);
