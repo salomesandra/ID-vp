@@ -9,12 +9,17 @@
 	<h1>Sandra, veebiprogrammeerimine</h1>
 	 <p>See leht on loodud veebiprogrammeerimise kursusel <a href="https://www.tlu.ee">Tallinna Ülikoolis</a> ning ei sisalda tõsiseltvõetavat sisu!</p>
 	<p>Esialgu tutvusime lihtsalt HTML keelega, peatselt programmeerime.
-	<p><br>Avasin selle veebilehe kell <%=timeNow%>.</p><p>Tänane kuupäev on <%=dateNow%>. Täna on <%=dayNow%> ning praegu on <%=dayPart%>.</p><hr><a href="/vanasona"><button>Vanasõna</button></a>
+	<p><br>Avasin selle veebilehe kell <%=timeNow%>.</p><p>Tänane kuupäev on <%=dateNow%>. Täna on <%=dayNow%> ning praegu on <%=dayPart%>.</p><hr>
+	
+	<a href="/signup"><button>Loo kasutajakonto</button></a>
+	<a href="/signin"><button>Sisselogimine</button></a>
+	<br><br>
+	<a href="/vanasona"><button>Vanasõna</button></a>
 	<a href="/koolitee"><button>Minu koolitee</button></a>
 	<a href="/visiit"><button>Registreerimisvorm</button></a>
 	<a href="/eestifilm"><button>Eesti film</button></a>
-	<a href="/galleryPhotoUpload"><button>Fotode üleslaadimine pildigaleriisse</button></a>
-	<a href="/fotogalerii"><button>Fotogalerii</button></a>
+	
+	
 	<br><br><img src="/gallery/normal/<%=image.filename%>"
 	alt="<%=image.alttext%>">
 	<br><img src="Pic/nourish-me-mother-b.png" width="200" alt="">

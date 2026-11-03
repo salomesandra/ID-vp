@@ -63,6 +63,18 @@ app.get('/', async(req, res)=>{
 	
 });
 
+
+//sisseloginud kasutajate avaleht
+app.get('/home', (req, res) => {
+	res.render('home');
+});
+
+//väljalogimine
+app.get('/logout', (req, res) => {
+	res.redirect('/');
+});
+
+
 app.get('/vanasona', async (req, res)=>{
 	const data = await vanasonad.vanasonad();
 	res.render('vanasona', { vanasonad: data });
@@ -86,5 +98,13 @@ app.use('/galleryPhotoUpload', galleryPhotoUploadRouter);
 const fotoGaleriiRouter = require('./routes/fotoGaleriiRoutes');
 app.use('/fotogalerii', fotoGaleriiRouter);
 
+
+//Kasutajakonto loomine
+const signupRouter = require('./routes/signupRoutes');
+app.use('/signup', signupRouter);
+
+//Sisselogimine
+const signinRouter = require('./routes/signinRoutes');
+app.use('/signin', signinRouter);
 
 app.listen(5214);
