@@ -65,8 +65,31 @@ app.get('/', async(req, res)=>{
 
 
 //sisseloginud kasutajate avaleht
-app.get('/home', (req, res) => {
-	res.render('home');
+app.get('/home', async(req, res) => {
+	let conn;
+	try {
+		let sqlReq = 'SELECT filename, alttext FROM galleryphotos WHERE id=(SELECT MAX(id) FROM galleryphotos WHERE privacy=3 AND deleted IS NULL)';
+
+		conn = await mysql.createConnection({
+			host: process.env.DB_HOST, 
+			user: process.env.DB_USER,
+			password: process.env.DB_PASS,
+			database: process.env.DB_NAME
+		});
+		const [result] = await conn.execute(sqlReq);
+		let img = result[0];
+		if (img.alttext == '') {
+			img.alttext = 'Uusim avalik foto, lisatud kell ' + timeNow
+		}
+		res.render('home', {image: img});
+	} catch (err) {
+		console.log('Viga: ' + err);
+		res.render('home', {img: {} });
+	}
+	finally {
+		if(conn){}
+		await conn.end();
+	}
 });
 
 //väljalogimine

@@ -27,10 +27,6 @@ const signinPagePost = async (req, res) => {
 		database: process.env.DB_NAME
 		});
 		
-		const sqlReq = 'SELECT id, filename, alttext FROM galleryphotos WHERE privacy >= 2 ORDER BY id DESC';
-        const [galeriifotod] = await conn.execute(sqlReq);
-		res.render('fotogalerii', { photoData: galeriifotod });
-		
 		let sqlReq = 'SELECT id, password FROM users WHERE email = ?';
 		const [users] = await conn.execute(sqlReq, [req.body.emailInput]);
 		
