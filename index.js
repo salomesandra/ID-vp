@@ -2,7 +2,8 @@ const express = require('express');
 const dateTimeET = require('./src/dateTimeET');
 const vanasonad = require('./src/vanasonad');
 const bodyparser = require('body-parser');
-
+const session = require('express-session');
+const loginCheck = require('./src/checkLogin');
 
 //moodul andmebaasiga suhtlemiseks (koos async ehk ootamise osaga)
 const mysql = require('mysql2/promise');
@@ -13,7 +14,10 @@ require('dotenv').config();
 //käivitan funktsiooni express() ja annan nimeks app
 const app = express();
 
-//määrame renderusmootori: EJS
+//võtan kasutusele sessioonihalduri
+app.use(session({secret: process.env.SES_SECRET, saveUninitialized: false, resave: true}));
+
+//määrame renderdusmootori: EJS
 app.set('view engine', 'ejs');
 
 //määrame avalikuna kasutatava kataloogi
@@ -65,7 +69,7 @@ app.get('/', async(req, res)=>{
 
 
 //sisseloginud kasutajate avaleht
-app.get('/home', async(req, res) => {
+app.get('/home', loginCheck.isLogin, async(req, res) => {
 	let conn;
 	try {
 		let sqlReq = 'SELECT filename, alttext FROM galleryphotos WHERE id=(SELECT MAX(id) FROM galleryphotos WHERE privacy=3 AND deleted IS NULL)';
@@ -94,6 +98,8 @@ app.get('/home', async(req, res) => {
 
 //väljalogimine
 app.get('/logout', (req, res) => {
+	//hävitame sessiooni
+	req.session.destroy();
 	res.redirect('/');
 });
 
@@ -120,6 +126,9 @@ app.use('/galleryPhotoUpload', galleryPhotoUploadRouter);
 
 const fotoGaleriiRouter = require('./routes/fotoGaleriiRoutes');
 app.use('/fotogalerii', fotoGaleriiRouter);
+
+const privaatGaleriiRouter = require('./routes/privaatGaleriiRoutes');
+app.use('/privaatgalerii', privaatGaleriiRouter);
 
 
 //Kasutajakonto loomine
