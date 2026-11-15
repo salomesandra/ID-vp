@@ -14,8 +14,8 @@ const privaatGaleriiVaade = async (req, res) => {
 			password: process.env.DB_PASS,
 			database: process.env.DB_NAME
 		});
-		const sqlReq = 'SELECT id, filename, alttext FROM galleryphotos WHERE privacy = 1 ORDER BY id DESC';
-        const [galeriifotod] = await conn.execute(sqlReq);
+		const sqlReq = 'SELECT id, filename, alttext FROM galleryphotos WHERE privacy = 1 AND userid = ? ORDER BY id DESC';
+        const [galeriifotod] = await conn.execute(sqlReq, [userId]);
 
 		res.render('privaatgalerii', { photoData: galeriifotod });
 	}

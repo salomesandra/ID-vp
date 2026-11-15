@@ -11,13 +11,23 @@
     <img src="Pic/veebiprogrammeerimine_2026_ID.png" alt="">
     <h1>Galerii privaatne vaade</h1>
     <hr>
-    <p><a href="/home"><button>Esileht</button></a>
+    <% if (locals.usersName) { %>
+    Sisse logitud kasutaja: <%= locals.usersName %>
+	<% } %>
 	<a href="/logout"><button>Logi välja</button></a>
+	<br><br>
+	<a href="/home"><button>Esileht</button></a>
+
     <div class="gallery">
         <% photoData.forEach(function(image) { %>
-            <a href="/gallery/normal/<%=image.filename%>" data-fancybox="galerii" data-caption="<%= image.alttext %>">
+
+            <div class="gallery-item">
+            <a href="/gallery/normal/<%=image.filename%>" data-fancybox="galerii" 
+            data-caption="<%= image.alttext %> <br> 
+            <span class='privacy-tag'>Pilt on nähtav ainult minule</span>">
             <img src="/gallery/thumbs/<%=image.filename%>" alt="<%=image.alttext%>" loading="lazy"></a>
             </a>
+            </div>
             <% }); %>
     </div>
 

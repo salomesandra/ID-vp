@@ -27,7 +27,7 @@ const signinPagePost = async (req, res) => {
 		database: process.env.DB_NAME
 		});
 		
-		let sqlReq = 'SELECT id, password FROM users WHERE email = ?';
+		let sqlReq = 'SELECT id, firstname, password FROM users WHERE email = ?';
 		const [users] = await conn.execute(sqlReq, [req.body.emailInput]);
 		
 		//kui sellist üldse ei leitud
@@ -43,6 +43,7 @@ const signinPagePost = async (req, res) => {
 			
 			//paneme sessiooni käima ja salvestame sessioonimuutujad:
 			req.session.userId = user.id;
+			req.session.usersName = user.firstname;
 			return res.redirect('/home');
 		} else {
 			return res.render('signin', {notice: 'Kasutajatunnus ja/või salasõna on vale!'});

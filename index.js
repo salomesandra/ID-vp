@@ -3,6 +3,7 @@ const dateTimeET = require('./src/dateTimeET');
 const vanasonad = require('./src/vanasonad');
 const bodyparser = require('body-parser');
 const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 const loginCheck = require('./src/checkLogin');
 
 //moodul andmebaasiga suhtlemiseks (koos async ehk ootamise osaga)
@@ -14,8 +15,24 @@ require('dotenv').config();
 //käivitan funktsiooni express() ja annan nimeks app
 const app = express();
 
+const options = {
+	host: process.env.DB_HOST,
+	port: 3306,
+	user: process.env.DB_USER,
+	password: process.env.DB_PASS,
+	database: process.env.DB_NAME
+};
+
+const sessionStore = new MySQLStore(options);
+
 //võtan kasutusele sessioonihalduri
-app.use(session({secret: process.env.SES_SECRET, saveUninitialized: false, resave: true}));
+app.use(session({secret: process.env.SES_SECRET, saveUninitialized: false, resave: true, store: sessionStore}));
+
+ //res.locals sisse pandud muutujad on automaatselt kättesaadavad kõikides EJS failides, nii ei pea ma igasse res.render() funktsiooni käsitsi kasutaja nime kirjutama
+app.use((req, res, next) => {
+    res.locals.usersName = req.session.usersName || null;
+    next();
+});
 
 //määrame renderdusmootori: EJS
 app.set('view engine', 'ejs');

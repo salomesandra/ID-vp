@@ -44,3 +44,9 @@
     color: #ffffff;
     text-align: center;
 }
+
+.privacy-tag {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #cccccc;
+}
