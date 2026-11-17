@@ -1,6 +1,6 @@
 const mysql = require('mysql2/promise');
 const validator = require('validator');
-const argon = require('argon2');
+const argon = require('argon2'); // <- for the password
 
 //@desc page for creating an account
 //@route GET /signup

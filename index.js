@@ -147,6 +147,9 @@ app.use('/fotogalerii', fotoGaleriiRouter);
 const privaatGaleriiRouter = require('./routes/privaatGaleriiRoutes');
 app.use('/privaatgalerii', privaatGaleriiRouter);
 
+const addnewsRouter = require('./routes/addnewsRoutes');
+app.use('/addnews', addnewsRouter);
+
 
 //Kasutajakonto loomine
 const signupRouter = require('./routes/signupRoutes');

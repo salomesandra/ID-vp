@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<title>Sandra, veebiprogrammeerimine</title>
+</head>
+<body>
+	<img src="../Pic/veebiprogrammeerimine_2026_ID.png" alt="">
+	<h1>Uudiste lisamine</h1>
+	<% if (locals.usersName) { %>
+    Sisse logitud kasutaja: <%= locals.usersName %>
+	<% } %>
+	<a href="/logout"><button>Logi välja</button></a>
+	<br><br>
+	<a href="/home"><button>Esileht</button></a>
+	<hr>
+	<form method="POST">
+		<label for="titleInput">Uudise pealkiri</label>
+		<input type="text" name="titleInput" id="titleInput" placeholder="Uudise pealkiri ..." required>
+		<br>
+		<label for="contentInput">Uudise sisu</label>
+		<br>
+		<textarea id="contentInput" name="contentInput" placeholder="Uudise sisu ..." required rows="5" cols="80" maxlength="2000"></textarea>
+		<br>
+		<label for="expireInput">Uudise aegumiskuupäev</label>
+		<input type="date" name="expireInput" id="expireInput" required>
+		<br>
+		<input type="submit" name="newsSubmit" value="Salvesta">
+</form>
+</body>
+</html>
