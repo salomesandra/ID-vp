@@ -10,7 +10,7 @@ router.use(loginCheck.isLogin);
 
 //seadistame multer vahevara (middleware) failide üleslaadimiseks
 //määran üleslaadimise kataloogi
-//const upload = multer({dest: process.env.NEWS_UPLOAD_ORIGINAL_PATH});
+const upload = multer({dest: process.env.NEWS_UPLOAD_ORIGINAL_PATH});
 
 const {
 	addNewsUpload,
@@ -18,10 +18,7 @@ const {
 	} = require('../controllers/addnewsControllers');
 
 router.route('/').get(addNewsUpload);
-router.route('/').get(addNewsPost);
-
 //post osa suunatakse läbi vahevara - upload
-//router.route('/').post(upload.single('photoInput'), galleryPhotoPost);
-
+router.route('/').post(upload.single('photoInput'), addNewsPost);
 
 module.exports = router;

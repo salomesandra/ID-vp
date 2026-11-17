@@ -57,10 +57,6 @@ const galleryPhotoPost = async (req, res) => {
 	}
 };
 
-//@desc page for viewing gallery
-//@route GET /gallery
-//@access public
-
 
 module.exports = {
 	galleryPhotoUpload,

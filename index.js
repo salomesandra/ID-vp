@@ -150,6 +150,8 @@ app.use('/privaatgalerii', privaatGaleriiRouter);
 const addnewsRouter = require('./routes/addnewsRoutes');
 app.use('/addnews', addnewsRouter);
 
+const readnewsRouter = require('./routes/readnewsRoutes');
+app.use('/readnews', readnewsRouter);
 
 //Kasutajakonto loomine
 const signupRouter = require('./routes/signupRoutes');
