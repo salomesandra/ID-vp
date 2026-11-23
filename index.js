@@ -89,7 +89,20 @@ app.get('/', async(req, res)=>{
 app.get('/home', loginCheck.isLogin, async(req, res) => {
 	let conn;
 	try {
-		let sqlReq = 'SELECT filename, alttext FROM galleryphotos WHERE id=(SELECT MAX(id) FROM galleryphotos WHERE privacy=3 AND deleted IS NULL)';
+		const sqlReq = `SELECT 
+				news.news_title, 
+				news.news_text, 
+				news.created, 
+				newsphotos.filename, 
+				newsphotos.alttext,
+				users.firstname,
+				users.lastname
+			FROM news 
+			LEFT JOIN newsphotos ON news.newsphotos_id = newsphotos.id 
+			LEFT JOIN users ON news.user_id = users.id
+			WHERE news.expire_date >= CURDATE() AND news.deleted IS NULL 
+			ORDER BY news.id DESC 
+			LIMIT 1`;
 
 		conn = await mysql.createConnection({
 			host: process.env.DB_HOST, 
@@ -97,20 +110,24 @@ app.get('/home', loginCheck.isLogin, async(req, res) => {
 			password: process.env.DB_PASS,
 			database: process.env.DB_NAME
 		});
+
 		const [result] = await conn.execute(sqlReq);
-		let img = result[0];
-		if (img.alttext == '') {
-			img.alttext = 'Uusim avalik foto, lisatud kell ' + timeNow
+
+		let latestNews = result[0] || null;
+		if (latestNews) {
+			latestNews.created = new Date(latestNews.created).toLocaleDateString('et-EE');
 		}
-		res.render('home', {image: img});
+
+		res.render('home', { frontNews: latestNews });
 	} catch (err) {
-		console.log('Viga: ' + err);
-		res.render('home', {img: {} });
+		console.log('Viga avalehe uudise laadimisel: ' + err);
+		res.render('home', { frontNews: null });
 	}
 	finally {
-		if(conn){}
+		if(conn){
 		await conn.end();
 	}
+}
 });
 
 //väljalogimine

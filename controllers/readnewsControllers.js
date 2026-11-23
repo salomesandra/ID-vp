@@ -7,21 +7,36 @@ const mysql = require('mysql2/promise');
 const uudistePortaal = async (req, res) => {
 	let conn; 
 	try {
-		const userId = req.session.userId;
 		conn = await mysql.createConnection({
 			host: process.env.DB_HOST, 
 			user: process.env.DB_USER,
 			password: process.env.DB_PASS,
 			database: process.env.DB_NAME
 		});
-		const sqlReq = 'SELECT news_title, news_text, created, newsphotos_id, newsphotos_alttext FROM news WHERE expire >= ? AND deleted IS NULL ORDER By id DESC';
-        const [uudised] = await conn.execute(sqlReq, [userId]);
+		const sqlReq = `
+		SELECT 
+			news.news_title, 
+			news.news_text, 
+			news.created, 
+			newsphotos.filename, 
+			newsphotos.alttext,
+			users.firstname,
+			users.lastname
+		FROM news 
+		LEFT JOIN newsphotos ON news.newsphotos_id = newsphotos.id 
+		LEFT JOIN users ON news.user_id = users.id
+		WHERE news.expire_date >= ? AND news.deleted IS NULL
+		ORDER BY news.id DESC
+		`;
+		const today = new Date().toISOString().split('T')[0];
 
-		res.render('readnews', { photoData: uudised });
+        const [uudised] = await conn.execute(sqlReq, [today]);
+
+		res.render('readnews', { newsData: uudised });
 	}
 	catch (err) {
 		console.log('Viga uudiste laadimisel: ' + err);
-        res.render('readnews', { photoData: [] });
+        res.render('readnews', { newsData: [] });
 	}
 	finally {
 		if(conn){

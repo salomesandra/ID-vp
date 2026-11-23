@@ -19,7 +19,9 @@ const addNewsPost = async (req, res) => {
 	let conn;
 	const title = validator.escape(req.body.titleInput);
 	const content = validator.escape(req.body.contentInput);
-	const expire = req.body.expireInput;
+	const expireDate = new Date()
+	expireDate.setDate(expireDate.getDate() + 7)
+	const expire = expireDate.toISOString().split('T')[0];;
 
 //kontrollime, kas kõik oluline on olemas:
 	if(!title || !content || !expire){
@@ -36,17 +38,18 @@ const addNewsPost = async (req, res) => {
 	try {
 		//genereerida oma failinime
 		const fileName = 'news_' + Date.now() + '.jpg';
-		await fs.rename(req.file.path, req.file.destination + fileName);
+		if (req.file) {
+			await fs.rename(req.file.path, req.file.destination + fileName);
 
-		//pildi väiksemaks muutmine ja watermarki lisamine
-		await sharp(req.file.destination + fileName)
-		.resize(400, 300)
-		.composite([{input: './Public/Pic/vp_logo_small.png', gravity: 'southeast'}])
-		.jpeg({quality: 90})
-		.toFile(process.env.NEWS_UPLOAD_RESIZED_PATH + fileName);
-
+				//pildi väiksemaks muutmine ja watermarki lisamine
+			await sharp(req.file.destination + fileName)
+				.resize(400, 300)
+				.composite([{input: './Public/Pic/vp_logo_small.png', gravity: 'southeast'}])
+				.jpeg({quality: 90})
+				.toFile(process.env.NEWS_UPLOAD_RESIZED_PATH + fileName);
+			
+		}
 		let sqlReqNews = 'INSERT INTO news (news_title, news_text, expire_date, user_id, newsphotos_id, newsphotos_alttext) VALUES (?,?,?,?,?,?)';
-
 		let sqlReqNewsPhotos = 'INSERT INTO newsphotos (filename, origname, alttext, privacy, userid) VALUES (?,?,?,?,?)';
 		
 		const userId = req.session.userId;
@@ -57,21 +60,33 @@ const addNewsPost = async (req, res) => {
 			database: process.env.DB_NAME
 		});
 
-		const [photoResult] = await conn.execute(sqlReqNewsPhotos, [
-			fileName,
-			req.file.originalname,
-			req.body.altInput,
-			req.body.privacyInput,
-			userId]);
+		if (req.file) {
+			const [photoResult] = await conn.execute(sqlReqNewsPhotos, [
+				fileName,
+				req.file.originalname,
+				req.body.altInput,
+				req.body.privacyInput,
+				userId]);
+			const [newsResult] = await conn.execute(sqlReqNews, [
+				title, 
+				content, 
+				expire, 
+				userId,
+				photoResult.insertId,
+				req.body.altInput
+			]);
+		} else {
+			const [newsResult] = await conn.execute(sqlReqNews, [
+				title, 
+				content, 
+				expire, 
+				userId,
+				null,
+				req.body.altInput
+			]);
+		}
 
-		const [newsResult] = await conn.execute(sqlReqNews, [
-			title, 
-			content, 
-			expire, 
-			userId,
-			photoResult.insertId,
-			req.body.altInput
-		]);
+
 		
 		console.log('Salvestati: ' + title);
 		res.render('addnews_upload');

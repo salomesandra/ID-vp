@@ -18,8 +18,25 @@
 	<a href="/fotogalerii"><button>Üldine fotogalerii</button></a>
 	<a href="/privaatgalerii"><button>Privaatne fotogalerii</button></a>
 	<a href="/addnews"><button>Lisa uudiseid</button></a>
+	<a href="/readnews"><button>Uudisteportaal</button></a>
 	
-	<br><br><img src="/gallery/normal/<%=image.filename%>"
-	alt="<%=image.alttext%>">
+	<br><br>
+	<div class="news-container">
+    <% if (frontNews) { %>
+
+            <div class="news-item">
+                <h2><%= frontNews.news_title %></h2>
+                <p class="metadata">
+                    Lisatud: <%= frontNews.created %> <br> Autor: <%= frontNews.firstname %> <%= frontNews.lastname %>
+                </p>
+                <% if (frontNews.filename) { %>
+                    <img src="/gallery/news_normal/<%=frontNews.filename%>" alt="<%= frontNews.alttext %>">
+					 <% } %>
+                <p><%= frontNews.news_text %></p>
+            </div>
+    <% } else { %>
+        <p>Ühtegi uudist ei ole!</p>
+    <% } %>
+</div>
 </body>
 </html>
