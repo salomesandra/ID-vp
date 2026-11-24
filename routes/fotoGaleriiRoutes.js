@@ -7,8 +7,14 @@ const router = express.Router();
 router.use(loginCheck.isLogin);
 
 const {
-	fotoGaleriiVaade} = require('../controllers/fotoGaleriiControllers');
+	fotoGaleriiVaade,
+	fotoGaleriiHome
+	} = require('../controllers/fotoGaleriiControllers');
 
-router.route('/').get(fotoGaleriiVaade);
+router.route('/').get(fotoGaleriiHome);
+
+//router.route('/my').get(myGallery);
+
+router.route('/:page').get(fotoGaleriiVaade);
 
 module.exports = router;

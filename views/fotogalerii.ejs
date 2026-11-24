@@ -2,13 +2,12 @@
 <html lang="et">
 <head>
 	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css" />
 	<title>Sandra, veebiprogrammeerimine</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/style/gallery.css">
+	<script src="/script/gallery.js" defer></script>
 </head>
 <body>
-    <img src="Pic/veebiprogrammeerimine_2026_ID.png" alt="">
+    <img src="../Pic/veebiprogrammeerimine_2026_ID.png" alt="">
     <h1>Fotogalerii</h1>
     <hr>
     <% if (locals.usersName) { %>
@@ -17,21 +16,29 @@
 	<a href="/logout"><button>Logi välja</button></a>
 	<br><br>
 	<a href="/home"><button>Esileht</button></a>
-    <div class="gallery">
-        <% photoData.forEach(function(image) { %>
-
-            <div class="gallery-item">
-            <a href="/gallery/normal/<%=image.filename%>" data-fancybox="galerii" 
-            data-caption="<%= image.alttext %> <br> 
-            <span class='privacy-tag'>Pilt on nähtav sisselogitud kasutajale</span>">
-            <img src="/gallery/thumbs/<%=image.filename%>" alt="<%=image.alttext%>" loading="lazy"></a>
-            </a>
-            </div>
+	
+	<br><br>
+	
+	<dialog id="modal" class="modalarea">
+		<span id="modalClose" class="modalclose">&times;</span>
+		<div class="modalhorizontal">
+			<div class="modalvertical">
+				<p id="modalCaption"></p>
+				<img id="modalImage" src="../Pic/empty.png" alt="galeriipilt">
+			</div>
+		</div>
+	</dialog>
+	
+	<p><%- links %></p>
+	
+    <div id="gallery" class="gallery">
+        <% photoData.forEach(function(image){ %>
+            <img src="/gallery/thumbs/<%=image.filename%>" alt="<%=image.alttext%>" loading="lazy" class="thumbs" data-id="<%= image.id %> data-filename="<%= image.src %>">
             <% }); %>
     </div>
 
     <br><br>
     
-    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
 </body>
 </html>

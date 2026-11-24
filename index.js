@@ -26,7 +26,15 @@ const options = {
 const sessionStore = new MySQLStore(options);
 
 //võtan kasutusele sessioonihalduri
-app.use(session({secret: process.env.SES_SECRET, saveUninitialized: false, resave: true, store: sessionStore}));
+app.use(session({secret: 
+process.env.SES_SECRET, 
+saveUninitialized: false, 
+resave: false, 
+store: sessionStore,
+cookie: {
+	maxAge: 1000 * 60 * 60 * 1
+	}
+}));
 
  //res.locals sisse pandud muutujad on automaatselt kättesaadavad kõikides EJS failides, nii ei pea ma igasse res.render() funktsiooni käsitsi kasutaja nime kirjutama
 app.use((req, res, next) => {
